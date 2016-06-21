@@ -79,7 +79,7 @@ public class ConnectionHandler implements Runnable {
 	private static final Logger logger =
 		LoggerFactory.getLogger(ConnectionHandler.class);
 
-	public static final int PORT_RANGE_START = 49152;
+	public static final int PORT_RANGE_START = 49252;
 	public static final int PORT_RANGE_END = 65534;
 
 	private static final int OUTBOUND_CONNECTIONS_POOL_SIZE = 20;
@@ -122,24 +122,26 @@ public class ConnectionHandler implements Runnable {
 		for (int port = ConnectionHandler.PORT_RANGE_START;
 				port <= ConnectionHandler.PORT_RANGE_END;
 				port++) {
+			System.out.println("One time in");
 			InetSocketAddress tryAddress =
 				new InetSocketAddress(address, port);
 
 			try {
-				this.channel = ServerSocketChannel.open();
+				this.channel = null;
+				/*this.channel = ServerSocketChannel.open();
 				this.channel.socket().bind(tryAddress);
-				this.channel.configureBlocking(false);
+				this.channel.configureBlocking(false);*/
 				this.address = tryAddress;
 				break;
-			} catch (IOException ioe) {
+			} catch (Exception ioe) {
 				// Ignore, try next port
 				logger.warn("Could not bind to {}, trying next port...", tryAddress);
 			}
 		}
 
-		if (this.channel == null || !this.channel.socket().isBound()) {
+		/*if (this.channel == null || !this.channel.socket().isBound()) {
 			throw new IOException("No available port for the BitTorrent client!");
-		}
+		}*/
 
 		logger.info("Listening for incoming connections on {}.", this.address);
 
@@ -169,10 +171,10 @@ public class ConnectionHandler implements Runnable {
 	 * Start accepting new connections in a background thread.
 	 */
 	public void start() {
-		if (this.channel == null) {
+		/*if (this.channel == null) {
 			throw new IllegalStateException(
 				"Connection handler cannot be recycled!");
-		}
+		}*/
 
 		this.stop = false;
 
@@ -242,7 +244,7 @@ public class ConnectionHandler implements Runnable {
 	@Override
 	public void run() {
 		while (!this.stop) {
-			try {
+			/*try {
 				SocketChannel client = this.channel.accept();
 				if (client != null) {
 					this.accept(client);
@@ -252,10 +254,11 @@ public class ConnectionHandler implements Runnable {
 			} catch (IOException ioe) {
 				logger.warn("Unrecoverable error in connection handler", ioe);
 				this.stop();
-			}
+			}*/
 
 			try {
-				Thread.sleep(100);
+				//Thread.sleep(100);
+				Thread.sleep(10000);
 			} catch (InterruptedException ie) {
 				Thread.currentThread().interrupt();
 			}

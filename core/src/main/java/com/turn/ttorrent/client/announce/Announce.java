@@ -220,8 +220,9 @@ public class Announce implements Runnable {
 		while (!this.stop) {
 			try {
 				this.getCurrentTrackerClient().announce(event, false);
-				this.promoteCurrentTrackerClient();
-				event = AnnounceRequestMessage.RequestEvent.NONE;
+				logger.info("Not promoting this tracker to check round robin");
+				//this.promoteCurrentTrackerClient();
+				//event = AnnounceRequestMessage.RequestEvent.NONE;
 			} catch (AnnounceException ae) {
 				logger.warn(ae.getMessage());
 

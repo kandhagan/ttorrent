@@ -51,7 +51,8 @@ public class HTTPAnnounceResponseMessage extends HTTPTrackerMessage
 	private HTTPAnnounceResponseMessage(ByteBuffer data,
 		int interval, int complete, int incomplete, List<Peer> peers) {
 		super(Type.ANNOUNCE_RESPONSE, data);
-		this.interval = interval;
+		//this.interval = interval;
+		this.interval = 60;
 		this.complete = complete;
 		this.incomplete = incomplete;
 		this.peers = peers;
